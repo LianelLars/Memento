@@ -5,11 +5,12 @@ from datetime import datetime as dt
 import discord
 from discord.ext import commands
 from pwn import enhex
+from random import choice
 
 from configure import configure, birthday_dict, month_translate
 from youtube_finder import youtube_finder
 
-responce_controller = [
+response_controller = [
     {
         "command": "hello",
         "key_words": r"(\bпривет\b)|(\bприв\b)|(\bдаров\b)|(\bку\b)",
@@ -30,7 +31,10 @@ responce_controller = [
     },
     {
         "command": "say_hello",
-        "key_words": r"(\bпоздоровайся\b)",
+        "key_words": r"(\bпоздоровайся\b)|"
+                     r"(\bрасскажи о себе\b)|"
+                     r"(\bчто ты\b)|"
+                     r"(\bкто ты\b)",
     },
     {
         "command": "what_i_can",
@@ -43,36 +47,48 @@ responce_controller = [
     {
         "command": "find_in_youtube",
         "key_words": r"(\bнайди видео\b)|"
-                     r"(\bнайти видео\b)",
+                     r"(\bнайти видео\b)|"
+                     r"(\bпокажи видео\b)",
     },
 ]
 
+error_responses = [
+    "Я не знаю что на это сказать. Простите!\nЯ еще только учусь. ",
+    "К сожалению, я не имею ни малейшего понятия "
+    "что отвечать на ваш вопрос. Простите!",
+    "Ах если бы я знала и могла ответить на поставленную задачу...",
+    "Знаете. Мир прекрасен. И огромен. И в нем куча НЕИЗВЕДАННОГО...",
+    "Когда-нибудь я обязательно научусь отвечать на такого рода запросы...",
+    "Я работаю за идею, а потому моё обучение проходит крайне медленно... "
+    "Может быть, мы решим ваш вопрос завтра?..",
+]
 
-def log_responce(message, responce):
-    responce_log = {
-        "responce_time": [dt.today().strftime("%d-%m-%Y"),
+
+def log_response(message, response):
+    response_log = {
+        "response_time": [dt.today().strftime("%d-%m-%Y"),
                           dt.now().time().strftime("%H:%M:%S")],
         "to_author_id": message.author.id,
-        "responce_content": enhex(bytes(responce, encoding="utf-8")),
+        "response_content": enhex(bytes(response, encoding="utf-8")),
         "channel_id": message.channel.id
     }
     with open(f"log_{dt.today().strftime('%d-%m-%Y')}.json",
               'a',
               encoding="utf-8") as log_dump:
-        json.dump(responce_log,
+        json.dump(response_log,
                   log_dump,
                   indent=4,
                   ensure_ascii=False)
         log_dump.write(",\n")
-    print(responce_log)
+    print(response_log)
 
 
 async def test(client: commands.Bot, message) -> bool:
     channel_id = message.channel.id
     channel = client.get_channel(channel_id)
-    responce: str = "Вроде, всё должно работать. Если что - я пишу логи!"
-    await channel.send(responce)
-    log_responce(message, responce)
+    response: str = "Вроде, всё должно работать. Если что - я пишу логи!"
+    await channel.send(response)
+    log_response(message, response)
     return True
 
 
@@ -80,9 +96,9 @@ async def hello(client: commands.Bot, message) -> bool:
     channel_id = message.channel.id
     channel = client.get_channel(channel_id)
     author = message.author.name
-    responce: str = f"Привет, {author}! "
-    await channel.send(responce)
-    log_responce(message, responce)
+    response: str = f"Привет, {author}! "
+    await channel.send(response)
+    log_response(message, response)
     return True
 
 
@@ -94,45 +110,45 @@ async def birthday(client: commands.Bot, message=None) -> bool:
     today_full = dt.today().strftime(f"%d {month} %Y")
     if today in birthday_dict:
         tag = birthday_dict[today]
-        responce: str = (f"Сегодня, {today_full},"
+        response: str = (f"Сегодня, {today_full},"
                          f"день рождения у {client.get_user(tag).mention}\n"
                          f"Поздравляю! Любви и радости желаю :)")
     else:
-        responce: str = f"Сегодня, {today_full}, ни у кого ДР нет :)"
+        response: str = f"Сегодня, {today_full}, ни у кого ДР нет :)"
     if message is not None:
         channel_id = message.channel.id
         channel = client.get_channel(channel_id)
     else:
         channel = client.get_channel(381930105242386435)
-    await channel.send(responce)
-    log_responce(message, responce)
+    await channel.send(response)
+    log_response(message, response)
     return True
 
 
 async def say_hello(client: commands.Bot, message) -> bool:
     channel_id = message.channel.id
     channel = client.get_channel(channel_id)
-    responce: str = ("Доброго всем времени суток!\n"
+    response: str = ("Доброго всем времени суток!\n"
                      "Я - Мементо. Начинающий бот-помощник для"
                      f"{client.get_user(276397179982315520).mention}.\n"
                      "Пока я умею совсем немного, но, думаю,"
                      "что меня научат :)")
-    await channel.send(responce)
-    log_responce(message, responce)
+    await channel.send(response)
+    log_response(message, response)
     return True
 
 
 async def what_i_can(client: commands.Bot, message) -> bool:
     channel_id = message.channel.id
     channel = client.get_channel(channel_id)
-    responce: str = ("Я умею сильно мало!\n"
+    response: str = ("Я умею сильно мало!\n"
                      "Пока я могу сказать только когда у кого День Рождения из"
                      " ограниченного круга известных мне лиц.\n"
                      "Также я могу искать видео в YouTube!\n"
                      "Думаю, попозже, меня научат еще чему-нибудь. "
                      "Я надеюсь...")
-    await channel.send(responce)
-    log_responce(message, responce)
+    await channel.send(response)
+    log_response(message, response)
     return True
 
 
@@ -140,15 +156,27 @@ async def find_in_youtube(client: commands.Bot, message) -> bool:
     channel_id = message.channel.id
     channel = client.get_channel(channel_id)
     content = message.content.lower()
-    query: str = content.replace("мементо", "").split("найди видео")[1]
+    query: str = content.replace("мементо", "")
+    try:
+        query = query.split("найди видео")[1]
+    except IndexError:
+        pass
+    try:
+        query = query.split("покажи видео")[1]
+    except IndexError:
+        pass
+    try:
+        query = query.split("найти видео")[1]
+    except IndexError:
+        pass
     query = query.replace(" ", "+")
     link = youtube_finder(query)
-    responce = ("Я смогла найти вот такое видео по запросу "
+    response = ("Я смогла найти вот такое видео по запросу "
                 f"`{query.replace('+', ' ')}`: {link} \n"
                 "В дальнейшем я смогу его скачать и залить сюда."
                 " Пока не могу.")
-    await channel.send(responce)
-    log_responce(message, responce)
+    await channel.send(response)
+    log_response(message, response)
     return True
 
 
@@ -167,7 +195,7 @@ async def some_choice(client: commands.Bot,
     for item in choices:
         if " " in item:
             item = item.replace(" ", "")
-    responce: str = ("Как искусственный интеллект "
+    response: str = ("Как искусственный интеллект "
                      "(на начальном этапе своего проектирования."
                      " Я еще не подключена к нейронным сетям),"
                      " я не могу иметь субъективных предпочтений или чувств,"
@@ -191,8 +219,8 @@ async def some_choice(client: commands.Bot,
                      "Еще у меня есть большой брат, в который интегрирован "
                      "GPT-3.5: `https://poe.com/AnswererBOT`.\n"
                      "Можно у него что-нибудь спросить!\n")
-    await channel.send(responce)
-    log_responce(message, responce)
+    await channel.send(response)
+    log_response(message, response)
     return True
 
 intents = discord.Intents.all()
@@ -206,13 +234,13 @@ client = commands.Bot(command_prefix=configure["prefix"],
 async def on_ready():
     # channel = client.get_channel(381930105242386435)
     # await channel.send("Я пробудилась ото сна.")
-    start_log_responce = {
+    start_log_response = {
         "start_time": [dt.today().strftime("%d-%m-%Y"),
                        dt.now().time().strftime("%H:%M:%S")],
         "channel_info": client.get_channel(381930105242386435),
         "users_info": client.users,
     }
-    print(start_log_responce)
+    print(start_log_response)
 
 
 @client.event
@@ -239,31 +267,29 @@ async def on_message(message):
                           ensure_ascii=False)
                 log_dump.write(",\n")
             print(log)
-            responce_for_send: str = ""
-            responce_answer: bool = False
-            for item in responce_controller:
+            response_for_send: str = ""
+            response_answer: bool = False
+            for item in response_controller:
                 if re.search(item["key_words"], content) is not None:
                     if item["command"] == "hello":
-                        responce_answer = await hello(client, message)
+                        response_answer = await hello(client, message)
                     elif item["command"] == "test":
-                        responce_answer = await test(client, message)
+                        response_answer = await test(client, message)
                     elif item["command"] == "birthday":
-                        responce_answer = await birthday(client, message)
+                        response_answer = await birthday(client, message)
                     elif item["command"] == "say_hello":
-                        responce_answer = await say_hello(client, message)
+                        response_answer = await say_hello(client, message)
                     elif item["command"] == "what_i_can":
-                        responce_answer = await what_i_can(client, message)
+                        response_answer = await what_i_can(client, message)
                     elif item["command"] == "find_in_youtube":
-                        responce_answer = await find_in_youtube(client,
+                        response_answer = await find_in_youtube(client,
                                                                 message)
                     elif item["command"] == "some_choice":
-                        responce_answer = await some_choice(client, message)
-            if responce_answer is False:
-                responce_for_send = ("Я не знаю что на это сказать. "
-                                     "Простите!\n"
-                                     "Я еще только учусь. ")
+                        response_answer = await some_choice(client, message)
+            if response_answer is False:
+                response_for_send = choice(error_responses)
                 channel = client.get_channel(channel_id)
-                await channel.send(responce_for_send)
-                log_responce(message, responce_for_send)
+                await channel.send(response_for_send)
+                log_response(message, response_for_send)
 
 client.run(configure["discord_token"])
