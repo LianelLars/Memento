@@ -7,10 +7,10 @@ from discord.ext import commands
 from pwn import enhex
 from random import choice
 
-from configure import configure, birthday_dict, month_translate
+from configure import CONFIGURE, BIRTHDAY_DICT, MONTH_TRANSLATE
 from youtube_finder import youtube_finder
 
-response_controller = [
+RESPONSE_CONTROLLER: list[dict[str:str, str]] = [
     {
         "command": "hello",
         "key_words": r"(\bпривет\b)|(\bприв\b)|(\bдаров\b)|(\bку\b)",
@@ -47,12 +47,13 @@ response_controller = [
     {
         "command": "find_in_youtube",
         "key_words": r"(\bнайди видео\b)|"
+                     r"(\bнайди\b)|"
                      r"(\bнайти видео\b)|"
                      r"(\bпокажи видео\b)",
     },
 ]
 
-error_responses = [
+ERROR_RESPONSES: list[str] = [
     "Я не знаю что на это сказать. Простите!\nЯ еще только учусь. ",
     "К сожалению, я не имею ни малейшего понятия "
     "что отвечать на ваш вопрос. Простите!",
@@ -65,6 +66,9 @@ error_responses = [
 
 
 def log_response(message, response):
+    """
+    Function for logs.
+    """
     response_log = {
         "response_time": [dt.today().strftime("%d-%m-%Y"),
                           dt.now().time().strftime("%H:%M:%S")],
@@ -84,6 +88,9 @@ def log_response(message, response):
 
 
 async def test(client: commands.Bot, message) -> bool:
+    """
+    Function for easy-query testing.
+    """
     channel_id = message.channel.id
     channel = client.get_channel(channel_id)
     response: str = "Вроде, всё должно работать. Если что - я пишу логи!"
@@ -93,6 +100,9 @@ async def test(client: commands.Bot, message) -> bool:
 
 
 async def hello(client: commands.Bot, message) -> bool:
+    """
+    Function for answer on 'Hello' message :)
+    """
     channel_id = message.channel.id
     channel = client.get_channel(channel_id)
     author = message.author.name
@@ -103,13 +113,20 @@ async def hello(client: commands.Bot, message) -> bool:
 
 
 async def birthday(client: commands.Bot, message=None) -> bool:
+    """
+    Function for `birthday` parsing. Dict u can find in `CONFIGURE`.\n
+    #TODO:
+      #Create list for random choise of congratilations\n
+      #Create sub-function for parsing users.\n
+      #Send response automaticaly to `major` channel.
+    """
     today = dt.today().strftime("%d-%m")
     month = dt.today().strftime("%B")
-    if month in month_translate:
-        month = month_translate[month]
+    if month in MONTH_TRANSLATE:
+        month = MONTH_TRANSLATE[month]
     today_full = dt.today().strftime(f"%d {month} %Y")
-    if today in birthday_dict:
-        tag = birthday_dict[today]
+    if today in BIRTHDAY_DICT:
+        tag = BIRTHDAY_DICT[today]
         response: str = (f"Сегодня, {today_full},"
                          f"день рождения у {client.get_user(tag).mention}\n"
                          f"Поздравляю! Любви и радости желаю :)")
@@ -226,7 +243,7 @@ async def some_choice(client: commands.Bot,
 intents = discord.Intents.all()
 intents.message_content = True
 
-client = commands.Bot(command_prefix=configure["prefix"],
+client = commands.Bot(command_prefix=CONFIGURE["prefix"],
                       intents=intents)
 
 
@@ -256,8 +273,8 @@ async def on_message(message):
                                encoding="utf-8")),
         "channel_id": channel_id
     }
-    for prefix in configure["prefix"]:
-        if prefix in content and author != "Memento":
+    for prefix in CONFIGURE["prefix"]:
+        if prefix in content[0:7] and author != "Memento":
             with open(f"log_{dt.today().strftime('%d-%m-%Y')}.json",
                       'a',
                       encoding="utf-8") as log_dump:
@@ -269,7 +286,7 @@ async def on_message(message):
             print(log)
             response_for_send: str = ""
             response_answer: bool = False
-            for item in response_controller:
+            for item in RESPONSE_CONTROLLER:
                 if re.search(item["key_words"], content) is not None:
                     if item["command"] == "hello":
                         response_answer = await hello(client, message)
@@ -287,9 +304,9 @@ async def on_message(message):
                     elif item["command"] == "some_choice":
                         response_answer = await some_choice(client, message)
             if response_answer is False:
-                response_for_send = choice(error_responses)
+                response_for_send = choice(ERROR_RESPONSES)
                 channel = client.get_channel(channel_id)
                 await channel.send(response_for_send)
                 log_response(message, response_for_send)
 
-client.run(configure["discord_token"])
+client.run(CONFIGURE["discord_token"])
