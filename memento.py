@@ -5,7 +5,7 @@ from datetime import datetime as dt
 import discord
 from discord.ext import commands
 from pwn import enhex
-from random import choice
+import requests as r
 
 from configure import CONFIGURE, BIRTHDAY_DICT, MONTH_TRANSLATE
 from youtube_finder import youtube_finder
@@ -143,6 +143,9 @@ async def birthday(client: commands.Bot, message=None) -> bool:
 
 
 async def say_hello(client: commands.Bot, message) -> bool:
+    """
+    Function for saying first hello and small talk about this application.
+    """
     channel_id = message.channel.id
     channel = client.get_channel(channel_id)
     response: str = ("Доброго всем времени суток!\n"
@@ -156,20 +159,30 @@ async def say_hello(client: commands.Bot, message) -> bool:
 
 
 async def what_i_can(client: commands.Bot, message) -> bool:
+    """
+    Function talking about "what Memento can do"
+    """
     channel_id = message.channel.id
     channel = client.get_channel(channel_id)
-    response: str = ("Я умею сильно мало!\n"
-                     "Пока я могу сказать только когда у кого День Рождения из"
+    response: str = ("Я умею уже сильно побольше!\n"
+                     "Я могу напомнить у кого `сегодня` День Рождения из"
                      " ограниченного круга известных мне лиц.\n"
-                     "Также я могу искать видео в YouTube!\n"
+                     "Также я могу искать видео в YouTube и "
+                     "отвечать на каверзные вопросы!\n"
                      "Думаю, попозже, меня научат еще чему-нибудь. "
-                     "Я надеюсь...")
+                     "Хотя, в целом, я уже выполняю "
+                     "возложенные на меня обязанности :)")
     await channel.send(response)
     log_response(message, response)
     return True
 
 
 async def find_in_youtube(client: commands.Bot, message) -> bool:
+    """
+    Function for finding video in youtube by `message.author` query.\n
+    // So, I'm from Russia. This thing is very hard to be friends with VPNs\n
+    // Connect to `YouTube` host can be TOO long (around 2 min). Be patient :)
+    """
     channel_id = message.channel.id
     channel = client.get_channel(channel_id)
     content = message.content.lower()
@@ -188,8 +201,8 @@ async def find_in_youtube(client: commands.Bot, message) -> bool:
         pass
     query = query.replace(" ", "+")
     link = youtube_finder(query)
-    response = ("Я смогла найти вот такое видео по запросу "
-                f"`{query.replace('+', ' ')}`: {link} \n"
+    response = ("Я смогла найти вот такое видео: "
+                f"{link} \n"
                 "В дальнейшем я смогу его скачать и залить сюда."
                 " Пока не могу.")
     await channel.send(response)
@@ -197,48 +210,44 @@ async def find_in_youtube(client: commands.Bot, message) -> bool:
     return True
 
 
-async def some_choice(client: commands.Bot,
-                      message) -> bool:
+async def open_ai_integrate(client: commands.Bot, message) -> bool:
+    """
+    Function for calling `OpenAI` technology.\n
+    // VPNs nessesary. Cause Russia.\n
+    // If u have subscribe for `OpenAI` u can use your own api\n
+    and u will not have some limit for request.
+    //But i haven't enought money, so...
+    """
     channel_id = message.channel.id
     channel = client.get_channel(channel_id)
-    content = (message.content).lower()
-    choices: str = content.replace("мементо", "")
-    bad_chars = [",", ".", "-", "!", "?"]
-    dub = client.get_user(276397179982315520).mention
-    for item in bad_chars:
-        if item in choices:
-            choices = choices.replace(item, "")
-    choices = choices.split("или")
-    for item in choices:
-        if " " in item:
-            item = item.replace(" ", "")
-    response: str = ("Как искусственный интеллект "
-                     "(на начальном этапе своего проектирования."
-                     " Я еще не подключена к нейронным сетям),"
-                     " я не могу иметь субъективных предпочтений или чувств,"
-                     "поэтому не могу выбирать между "
-                     f"`{choices[0]}` и `{choices[1]}`."
-                     " Я способна только передавать информацию и "
-                     "давать рекомендации на основе"
-                     " анализа данных и логических выводов.\n"
-                     "В любом случае, выбор персонажей или еды зависит от "
-                     "личных предпочтений и"
-                     " вкусов каждого человека, и каждый может выбрать того "
-                     "или то, кто или что ему больше нравится.\n"
-                     "Дополнительно лишь могу сказать, что, так как я "
-                     "являюсь лишь помощником,"
-                     " в меня занесли некоторые критерии выбора. То есть:\n"
-                     f" - Я думаю, что {dub} выбрал бы Трисс;\n"
-                     f" - Я думаю, что {dub} пельмени не очень любит;\n"
-                     f" - Я думаю, что {dub} сказал бы: "
-                     "`Изначальному автору произведения лучше знать кого "
-                     "выбирать главному герою`.\n"
-                     "Еще у меня есть большой брат, в который интегрирован "
-                     "GPT-3.5: `https://poe.com/AnswererBOT`.\n"
-                     "Можно у него что-нибудь спросить!\n")
-    await channel.send(response)
-    log_response(message, response)
+    content: str = message.content.lower()[8:-1]
+    headers = {
+        "Content-Type": "application/json",
+        "Authorization": f"Bearer {CONFIGURE['open_ai_token']}",
+        "Accept": "*/*",
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"
+                      " AppleWebKit/537.36 (KHTML, like Gecko)"
+                      " Chrome/111.0.0.0 Safari/537.36",
+
+    }
+
+    data = {
+        "model": "gpt-3.5-turbo",
+        "messages": [{"role": "user", "content": content}],
+        "temperature": 0.7
+    }
+
+    req = r.post(CONFIGURE["url_open_ai"], headers=headers, json=data)
+
+    with open("open_ai.json", "w", encoding="utf-8") as json_dump:
+        json_dump.write(req.text)
+    with open('open_ai.json', encoding='utf-8') as req_file:
+        response = json.load(req_file)
+    response_for_send = response["choices"][0]["message"]["content"]
+    await channel.send(response_for_send)
+    log_response(message, response_for_send)
     return True
+
 
 intents = discord.Intents.all()
 intents.message_content = True
@@ -249,6 +258,9 @@ client = commands.Bot(command_prefix=CONFIGURE["prefix"],
 
 @client.event
 async def on_ready():
+    """
+    First time run function.
+    """
     # channel = client.get_channel(381930105242386435)
     # await channel.send("Я пробудилась ото сна.")
     start_log_response = {
@@ -262,6 +274,9 @@ async def on_ready():
 
 @client.event
 async def on_message(message):
+    """
+    Main Function
+    """
     author = message.author.name
     content = (message.content).lower()
     channel_id = message.channel.id
@@ -284,7 +299,6 @@ async def on_message(message):
                           ensure_ascii=False)
                 log_dump.write(",\n")
             print(log)
-            response_for_send: str = ""
             response_answer: bool = False
             for item in RESPONSE_CONTROLLER:
                 if re.search(item["key_words"], content) is not None:
@@ -301,12 +315,8 @@ async def on_message(message):
                     elif item["command"] == "find_in_youtube":
                         response_answer = await find_in_youtube(client,
                                                                 message)
-                    elif item["command"] == "some_choice":
-                        response_answer = await some_choice(client, message)
             if response_answer is False:
-                response_for_send = choice(ERROR_RESPONSES)
-                channel = client.get_channel(channel_id)
-                await channel.send(response_for_send)
-                log_response(message, response_for_send)
+                response_answer = await open_ai_integrate(client,
+                                                          message)
 
 client.run(CONFIGURE["discord_token"])

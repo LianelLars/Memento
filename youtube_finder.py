@@ -2,7 +2,7 @@ import json
 
 import requests as r
 
-from configure import configure
+from configure import CONFIGURE
 
 
 def youtube_finder(query: str) -> str:
@@ -15,7 +15,7 @@ def youtube_finder(query: str) -> str:
     }
 
     req = r.get('https://www.googleapis.com/youtube/v3/search?part=snippet&'
-                f'q={query}&type=video&key={configure["youtube_key"]}',
+                f'q={query}&type=video&key={CONFIGURE["youtube_key"]}',
                 headers)
 
     with open('req.json', 'w', encoding='utf-8') as req_file:

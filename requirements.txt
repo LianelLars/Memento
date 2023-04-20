@@ -7,6 +7,7 @@ capstone==5.0.0rc2
 certifi==2022.12.7
 cffi==1.15.1
 charset-normalizer==3.1.0
+colorama==0.4.6
 colored-traceback==0.3.0
 cryptography==40.0.2
 discord.py==2.2.2
@@ -16,6 +17,7 @@ intervaltree==3.1.0
 Mako==1.2.4
 MarkupSafe==2.1.2
 multidict==6.0.4
+openai==0.27.4
 packaging==23.1
 paramiko==3.1.0
 plumbum==1.8.1
@@ -35,6 +37,7 @@ ROPGadget==7.3
 rpyc==5.3.1
 six==1.16.0
 sortedcontainers==2.4.0
+tqdm==4.65.0
 unicorn==2.0.1.post1
 urllib3==1.26.15
 yarl==1.8.2
