@@ -5,9 +5,11 @@ from datetime import datetime as dt
 import discord
 from discord.ext import commands
 from pwn import enhex
+from random import choice
 import requests as r
 
-from configure import CONFIGURE, BIRTHDAY_DICT, MONTH_TRANSLATE, DUB_ping_id
+from configure import CONFIGURE, BIRTHDAY_DICT
+from configure import MONTH_TRANSLATE, CHANNELS, DUB_ping_id
 from youtube_finder import youtube_finder
 
 RESPONSE_CONTROLLER: list[dict[str:str, str]] = [
@@ -51,6 +53,32 @@ RESPONSE_CONTROLLER: list[dict[str:str, str]] = [
                      r"(\bнайти видео\b)|"
                      r"(\bпокажи видео\b)",
     },
+    {
+        "command": "memento_mori",
+        "key_words": r"(\bmemento mori\b)"
+    }
+]
+
+CONGRATS_LIST: list[str] = [
+    "Поздравляю! Любви и радости желаю :)",
+    "Бесконечно растущей творческой потенции тебе, товарищ!",
+    "Да останешься ты таким же, какой ты есть. И пусть ничего не болит!",
+    "Встретились после долгой разлуки старые друзья... "
+    "Решили они стол организовать, "
+    "отметить встречу. Накрыли, разные явства "
+    "на столе присутствуют: кабан на вертеле, "
+    "сливы, прочие фрукты, куча салатов и т.п. "
+    "В общем, первый произносит тост: \n"
+    "- Выпьем же, друг, за удачу!\n"
+    "Посидели еще чуть чуть, первый опять произносит тост: \n"
+    "- Выпьем же, друг, за удачу!\n"
+    "Так за удачу они выпили еще раз 7. Второй не выдержал: \n"
+    "- Друг мой, а почему мы с тобой пьем лишь за удачу, "
+    "но ни разу за здоровье?\n"
+    "А первый ему и отвечает:\n"
+    "- Видишь этого кабана на столе? У него с утра было ТАКОЕ здоровье... "
+    "А вот удача обошла его стороной.\n"
+    "Вот чтоб и в твоей жизни удача была всегда на твоей стороне :) С ДР!",
 ]
 
 
@@ -101,31 +129,73 @@ async def hello(client: commands.Bot, message) -> bool:
     return True
 
 
-async def birthday(client: commands.Bot, message=None) -> bool:
+async def birthday_controller(client: commands.Bot, message, content) -> bool:
+    """
+    Function for run `when_birthday` or `today_birthday`\n
+    """
+    responce_answer: bool
+    if "когда" in content:
+        responce_answer = await when_birthday(client, message, content)
+        return responce_answer
+    else:
+        responce_answer = await today_birthday(client, message)
+        return responce_answer
+
+
+async def today_birthday(client: commands.Bot, message=None) -> bool:
     """
     Function for `birthday` parsing. Dict u can find in `CONFIGURE`.\n
-    #TODO:
-      #Create list for random choise of congratilations\n
-      #Create sub-function for parsing users.\n
-      #Send response automaticaly to `major` channel.
     """
-    channel_id = message.channel.id
-    channel = client.get_channel(channel_id)
     today = dt.today().strftime("%d-%m")
     month = dt.today().strftime("%B")
     if month in MONTH_TRANSLATE:
         month = MONTH_TRANSLATE[month]
     today_full = dt.today().strftime(f"%d {month} %Y")
-    if today in BIRTHDAY_DICT:
-        tag = BIRTHDAY_DICT[today]
-        response: str = (f"Сегодня, {today_full},"
-                         f"день рождения у {client.get_user(tag).mention}\n"
-                         f"Поздравляю! Любви и радости желаю :)")
+    if message is not None:
+        channel_id = message.channel.id
+        channel = client.get_channel(channel_id)
+        if today in BIRTHDAY_DICT:
+            tag = BIRTHDAY_DICT[today]
+            response: str = (f"Сегодня, {today_full}, "
+                             "день рождения у "
+                             f"{client.get_user(tag).mention}\n"
+                             f"{choice(CONGRATS_LIST)}")
+            await channel.send(response)
+            log_response(message, response)
+            return True
+        else:
+            response: str = f"Сегодня, {today_full}, ни у кого ДР нет :)"
+            await channel.send(response)
+            log_response(message, response)
+            return True
     else:
-        response: str = f"Сегодня, {today_full}, ни у кого ДР нет :)"
-    await channel.send(response)
-    log_response(message, response)
-    return True
+        channel = client.get_channel(CHANNELS["major_channel_id"])
+        if today in BIRTHDAY_DICT:
+            tag = BIRTHDAY_DICT[today]
+            response: str = (f"Сегодня, {today_full}, "
+                             "день рождения у "
+                             f"{client.get_user(tag).mention}\n"
+                             f"{choice(CONGRATS_LIST)}")
+            await channel.send(response)
+            return True
+
+
+async def when_birthday(client: commands.Bot, message, content: str) -> bool:
+    """
+    Function for anwswering when `birthday`. Dict u can find in `CONFIGURE`.\n
+    """
+    channel_id = message.channel.id
+    channel = client.get_channel(channel_id)
+    for bd, tag in BIRTHDAY_DICT.items():
+        if str(tag) in content:
+            response: str = (f"День рождения у {client.get_user(tag).name} - "
+                             f"{bd.replace('-','.')}")
+        else:
+            response: str = ("Увы, пользователь "
+                             "не рассказывал когда у него ДР.")
+        await channel.send(response)
+        log_response(message, response)
+        return True
 
 
 async def say_hello(client: commands.Bot, message) -> bool:
@@ -135,7 +205,7 @@ async def say_hello(client: commands.Bot, message) -> bool:
     channel_id = message.channel.id
     channel = client.get_channel(channel_id)
     response: str = ("Доброго всем времени суток!\n"
-                     "Я - Мементо. Начинающий бот-помощник для"
+                     "Я - Мементо. Начинающий бот-помощник для "
                      f"{client.get_user(DUB_ping_id).mention}.\n"
                      "Пока я умею совсем немного, но, думаю,"
                      "что меня научат :)")
@@ -172,7 +242,7 @@ async def find_in_youtube(client: commands.Bot, message) -> bool:
     channel_id = message.channel.id
     channel = client.get_channel(channel_id)
     content = message.content.lower()
-    query: str = content.replace("мементо", "")
+    query: str = content[8:]
     try:
         query = query.split("найди видео")[1]
     except IndexError:
@@ -206,7 +276,7 @@ async def open_ai_integrate(client: commands.Bot, message) -> bool:
     """
     channel_id = message.channel.id
     channel = client.get_channel(channel_id)
-    content: str = message.content.lower()[8:-1]
+    content: str = message.content.lower()[8:]
     headers = {
         "Content-Type": "application/json",
         "Authorization": f"Bearer {CONFIGURE['open_ai_token']}",
@@ -235,6 +305,22 @@ async def open_ai_integrate(client: commands.Bot, message) -> bool:
     return True
 
 
+async def memento_mori(client: commands.Bot, message) -> bool:
+    """
+    Throll Phaze for `Memento Mori` :)
+    """
+    channel_id = message.channel.id
+    channel = client.get_channel(channel_id)
+    response = ("Memento Mori - крылатое выражение, "
+                "обозначающее 'Помни о смерти'. "
+                "В какой-то степени, первое слово именно этого выражения "
+                "послужило основой моего имени, так как "
+                f"{client.get_user(DUB_ping_id).mention} весьма забывчивый на "
+                "дни рождения :) А я создана чтоб ему помочь.")
+    await channel.send(response)
+    log_response(message, response)
+    return True
+
 intents = discord.Intents.all()
 intents.message_content = True
 
@@ -246,6 +332,7 @@ client = commands.Bot(command_prefix=CONFIGURE["prefix"],
 async def on_ready():
     """
     First time run function.
+    Then run - send to cnannel (`major_channel_id`) Happy Birth Day :)
     """
     start_log_response = {
         "start_time": [dt.today().strftime("%d-%m-%Y"),
@@ -253,6 +340,7 @@ async def on_ready():
         "users_info": client.users,
     }
     print(start_log_response)
+    await today_birthday(client)
 
 
 @client.event
@@ -261,7 +349,7 @@ async def on_message(message):
     Main Function
     """
     author = message.author.name
-    content = (message.content).lower()
+    content = (message.content).lower()[8:]
     channel_id = message.channel.id
     log: dict = {
         "time": [dt.today().strftime("%d-%m-%Y"),
@@ -272,7 +360,7 @@ async def on_message(message):
         "channel_id": channel_id
     }
     for prefix in CONFIGURE["prefix"]:
-        if prefix in content[0:7] and author != "Memento":
+        if prefix in message.content[0:7] and author != "Memento":
             with open(f"log_{dt.today().strftime('%d-%m-%Y')}.json",
                       'a',
                       encoding="utf-8") as log_dump:
@@ -290,11 +378,15 @@ async def on_message(message):
                     elif item["command"] == "test":
                         response_answer = await test(client, message)
                     elif item["command"] == "birthday":
-                        response_answer = await birthday(client, message)
+                        response_answer = await birthday_controller(client,
+                                                                    message,
+                                                                    content)
                     elif item["command"] == "say_hello":
                         response_answer = await say_hello(client, message)
                     elif item["command"] == "what_i_can":
                         response_answer = await what_i_can(client, message)
+                    elif item["command"] == "memento_mori":
+                        response_answer = await memento_mori(client, message)
                     elif item["command"] == "find_in_youtube":
                         response_answer = await find_in_youtube(client,
                                                                 message)

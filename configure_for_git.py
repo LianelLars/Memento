@@ -13,6 +13,13 @@ BIRTHDAY_DICT = {
     "01-01": 112345678910111213,  # "%d-%m : id_user_from_discord"
 }
 
+MAIN_user_id = 112345678910111213
+
+CHANNELS = {
+    "bots_channel_id": 112345678910111213,
+    "major_channel_id": 112345678910111213
+}
+
 # For russian month translating :)
 
 MONTH_TRANSLATE = {
