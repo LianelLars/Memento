@@ -2,7 +2,7 @@
 
 ## Basic Information
 
-`Memento` - A simple discord bot to remind you of your friends' birthdays, a Q&A system with integrated `OpenAI' GPT-3.5/GPT-4 (depends on your API) and just a fun conversationalist :)
+`Memento` - a simple discord bot to remind you of your friends' birthdays, a Q&A system with integrated `OpenAI` GPT-3.5/GPT-4 (depends on your API) and just a fun conversationalist :)
 
 ## Configure
 
