@@ -7,7 +7,7 @@ from discord.ext import commands
 from pwn import enhex
 import requests as r
 
-from configure import CONFIGURE, BIRTHDAY_DICT, MONTH_TRANSLATE
+from configure import CONFIGURE, BIRTHDAY_DICT, MONTH_TRANSLATE, DUB_ping_id
 from youtube_finder import youtube_finder
 
 RESPONSE_CONTROLLER: list[dict[str:str, str]] = [
@@ -109,6 +109,8 @@ async def birthday(client: commands.Bot, message=None) -> bool:
       #Create sub-function for parsing users.\n
       #Send response automaticaly to `major` channel.
     """
+    channel_id = message.channel.id
+    channel = client.get_channel(channel_id)
     today = dt.today().strftime("%d-%m")
     month = dt.today().strftime("%B")
     if month in MONTH_TRANSLATE:
@@ -121,11 +123,6 @@ async def birthday(client: commands.Bot, message=None) -> bool:
                          f"Поздравляю! Любви и радости желаю :)")
     else:
         response: str = f"Сегодня, {today_full}, ни у кого ДР нет :)"
-    if message is not None:
-        channel_id = message.channel.id
-        channel = client.get_channel(channel_id)
-    else:
-        channel = client.get_channel(381930105242386435)
     await channel.send(response)
     log_response(message, response)
     return True
@@ -139,7 +136,7 @@ async def say_hello(client: commands.Bot, message) -> bool:
     channel = client.get_channel(channel_id)
     response: str = ("Доброго всем времени суток!\n"
                      "Я - Мементо. Начинающий бот-помощник для"
-                     f"{client.get_user(276397179982315520).mention}.\n"
+                     f"{client.get_user(DUB_ping_id).mention}.\n"
                      "Пока я умею совсем немного, но, думаю,"
                      "что меня научат :)")
     await channel.send(response)
@@ -250,12 +247,9 @@ async def on_ready():
     """
     First time run function.
     """
-    # channel = client.get_channel(381930105242386435)
-    # await channel.send("Я пробудилась ото сна.")
     start_log_response = {
         "start_time": [dt.today().strftime("%d-%m-%Y"),
                        dt.now().time().strftime("%H:%M:%S")],
-        "channel_info": client.get_channel(381930105242386435),
         "users_info": client.users,
     }
     print(start_log_response)
