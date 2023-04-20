@@ -11,8 +11,8 @@ Set your API keys for `Discrod`, `YouTube` and `OpenAI` and just run the bot :)
 
 ## Usage
 
-1. Var 1
-### Windows
+### 1. Var 1
+#### Windows
 
 ```
 python -v venv venv
@@ -20,7 +20,7 @@ python -v venv venv
 pip install -r requirements.txt
 py memento.py
 ```
-### Linux
+#### Linux
 
 ```
 python3 -v venv venv
@@ -28,7 +28,7 @@ sourse venv/bin/activate
 pip install -r requirements.txt
 python3 memento.py
 ```
-2. Var 2
+### 2. Var 2
 
 Just do
 ```
