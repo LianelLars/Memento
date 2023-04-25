@@ -190,12 +190,9 @@ async def when_birthday(client: commands.Bot, message, content: str) -> bool:
         if str(tag) in content:
             response: str = (f"День рождения у {client.get_user(tag).name} - "
                              f"{bd.replace('-','.')}")
-        else:
-            response: str = ("Увы, пользователь "
-                             "не рассказывал когда у него ДР.")
-        await channel.send(response)
-        log_response(message, response)
-        return True
+            await channel.send(response)
+            log_response(message, response)
+            return True
 
 
 async def say_hello(client: commands.Bot, message) -> bool:
