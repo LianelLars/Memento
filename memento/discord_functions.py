@@ -103,9 +103,10 @@ async def birthday(client: Bot, message: Message = None):
 
 
 async def ya_gpt_message(client: Bot, message: Message):
+    logger = logging.getLogger('MEMENTO.GPT')
     async_session = async_sessionmaker(ENGINE, expire_on_commit=False)
     async with async_session() as session:
-        author = (await session.scalars(select(User.id).where(
+        author: User = (await session.scalars(select(User.id).where(
             User.discord_id == message.author.id
         ))).one()
         data = (await session.scalars(select(Messages).where(
@@ -116,7 +117,8 @@ async def ya_gpt_message(client: Bot, message: Message):
         settings = (
             [{
                 'role': 'system',
-                'text': 'Ты - персональный ассистент. Пол: женский.'
+                'text': 'Ты - персональный ассистент. '
+                        'Отвечаешь так, как будто бы ты женского пола.'
             }]
         )
         context = []
@@ -129,6 +131,9 @@ async def ya_gpt_message(client: Bot, message: Message):
                 context.append({'role': 'user', 'text': usr})
                 context.append({'role': 'assistant', 'text': ai})
         new = [{'role': 'user', 'text': message.content[8:].strip()}]
+        logger.info(
+            f'Пользователь `{message.author.name}` '
+            f'задал запрос `{new[0]["text"]}`.')
         prompt = {
             'modelUri': MODEL_URI,
             'completionOptions': {

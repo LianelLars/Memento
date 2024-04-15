@@ -3,12 +3,14 @@ from logging.handlers import TimedRotatingFileHandler
 from pathlib import Path
 
 import discord
+from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from discord.ext.commands import Bot
 from discord.message import Message
 
 from memento.configure import (DISCORD_KEY, DISCROD_PREFIXES, FORMAT, LOG_FILE,
                                LOGS_DIR)
 from memento.discord_functions import birthday, run_command
+from memento.functions import clear_context
 
 logger = logging.getLogger('MEMENTO')
 Path(LOGS_DIR).mkdir(exist_ok=True)
@@ -35,15 +37,18 @@ client = Bot(command_prefix=DISCROD_PREFIXES, intents=intents)
 async def on_ready():
     logger = logging.getLogger('MEMENTO.STARTUP')
     logger.info('Бот начал работу.')
+    scheduler = AsyncIOScheduler()
+    scheduler.add_job(clear_context, 'interval', hours=1)
+    scheduler.start()
     await birthday(client)
 
 
 @client.event
 async def on_message(message: Message):
     logger = logging.getLogger('MEMENTO.MESSAGE')
-    if message.author.name != 'Memento':
+    if (message.author.name != 'Memento'  # если убрать - будет фани
+       and DISCROD_PREFIXES in message.content.lower()):
         logger.warning(f'Пришло сообщение от `{message.author.name}`.')
         await run_command(client, message)
-
 
 client.run(DISCORD_KEY)
