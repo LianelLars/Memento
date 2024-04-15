@@ -1,9 +1,11 @@
+#!/usr/bin/python3
 import logging
 from logging.handlers import TimedRotatingFileHandler
 from pathlib import Path
 
 import discord
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
+from apscheduler.triggers.cron import CronTrigger
 from discord.ext.commands import Bot
 from discord.message import Message
 
@@ -39,6 +41,8 @@ async def on_ready():
     logger.info('Бот начал работу.')
     scheduler = AsyncIOScheduler()
     scheduler.add_job(clear_context, 'interval', hours=1)
+    trigger = CronTrigger(hour='0', minute='14')
+    scheduler.add_job(birthday, trigger=trigger, args=(client,))
     scheduler.start()
     await birthday(client)
 
