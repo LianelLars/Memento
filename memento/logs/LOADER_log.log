@@ -1,0 +1,120 @@
+[15.04.2024 17:36:32][MEMENTO.STARTUP] INFO: Бот начал работу.
+[15.04.2024 17:36:37][MEMENTO.MESSAGE] WARNING: Пришло сообщение от `_new`.
+[15.04.2024 17:36:37][MEMENTO.hello] INFO: Запрос функции `hello`.
+[15.04.2024 17:36:41][MEMENTO.MESSAGE] WARNING: Пришло сообщение от `_new`.
+[15.04.2024 17:36:41][MEMENTO.test] INFO: Запрос функции `test`.
+[15.04.2024 17:38:51][MEMENTO.STARTUP] INFO: Бот начал работу.
+[15.04.2024 17:38:55][MEMENTO.MESSAGE] WARNING: Пришло сообщение от `_new`.
+[15.04.2024 17:38:56][MEMENTO.hello] INFO: Запрос функции `hello`.
+[15.04.2024 17:38:59][MEMENTO.MESSAGE] WARNING: Пришло сообщение от `_new`.
+[15.04.2024 17:38:59][MEMENTO.test] INFO: Запрос функции `test`.
+[15.04.2024 17:39:05][MEMENTO.MESSAGE] WARNING: Пришло сообщение от `_new`.
+[15.04.2024 17:39:05][MEMENTO.say_hello] INFO: Запрос функции `say_hello`.
+[15.04.2024 17:39:08][MEMENTO.MESSAGE] WARNING: Пришло сообщение от `_new`.
+[15.04.2024 17:39:08][MEMENTO.BIRTHDAY.today] WARNING: Пользователей, у которых сегодня др, не обнаружено.
+[15.04.2024 17:39:13][MEMENTO.MESSAGE] WARNING: Пришло сообщение от `_new`.
+[15.04.2024 17:39:13][MEMENTO.BIRTHDAY] WARNING: Найден пользователь Memento
+[15.04.2024 17:39:14][MEMENTO.BIRTHDAY] WARNING: Пользователь `_new` запросил др Memento
+[15.04.2024 17:39:26][MEMENTO.MESSAGE] WARNING: Пришло сообщение от `_new`.
+[15.04.2024 18:02:13][MEMENTO.STARTUP] INFO: Бот начал работу.
+[15.04.2024 18:02:58][MEMENTO.STARTUP] INFO: Бот начал работу.
+[15.04.2024 18:03:00][MEMENTO.MESSAGE] WARNING: Пришло сообщение от `_new`.
+[15.04.2024 18:04:39][MEMENTO.STARTUP] INFO: Бот начал работу.
+[15.04.2024 18:04:40][MEMENTO.MESSAGE] WARNING: Пришло сообщение от `_new`.
+[15.04.2024 18:05:04][MEMENTO.STARTUP] INFO: Бот начал работу.
+[15.04.2024 18:05:06][MEMENTO.MESSAGE] WARNING: Пришло сообщение от `_new`.
+[15.04.2024 18:05:45][MEMENTO.STARTUP] INFO: Бот начал работу.
+[15.04.2024 18:05:46][MEMENTO.MESSAGE] WARNING: Пришло сообщение от `_new`.
+[15.04.2024 18:08:43][MEMENTO.STARTUP] INFO: Бот начал работу.
+[15.04.2024 18:08:48][MEMENTO.MESSAGE] WARNING: Пришло сообщение от `_new`.
+[15.04.2024 18:10:58][MEMENTO.STARTUP] INFO: Бот начал работу.
+[15.04.2024 18:11:00][MEMENTO.MESSAGE] WARNING: Пришло сообщение от `_new`.
+[15.04.2024 18:12:12][MEMENTO.STARTUP] INFO: Бот начал работу.
+[15.04.2024 18:12:14][MEMENTO.MESSAGE] WARNING: Пришло сообщение от `_new`.
+[15.04.2024 18:12:28][MEMENTO.STARTUP] INFO: Бот начал работу.
+[15.04.2024 18:12:30][MEMENTO.MESSAGE] WARNING: Пришло сообщение от `_new`.
+[15.04.2024 18:14:09][MEMENTO.STARTUP] INFO: Бот начал работу.
+[15.04.2024 18:14:10][MEMENTO.MESSAGE] WARNING: Пришло сообщение от `_new`.
+[15.04.2024 18:14:36][MEMENTO.STARTUP] INFO: Бот начал работу.
+[15.04.2024 18:14:36][MEMENTO.MESSAGE] WARNING: Пришло сообщение от `_new`.
+[15.04.2024 18:15:55][MEMENTO.STARTUP] INFO: Бот начал работу.
+[15.04.2024 18:15:56][MEMENTO.MESSAGE] WARNING: Пришло сообщение от `_new`.
+[15.04.2024 18:16:36][MEMENTO.STARTUP] INFO: Бот начал работу.
+[15.04.2024 18:16:37][MEMENTO.MESSAGE] WARNING: Пришло сообщение от `_new`.
+[15.04.2024 18:19:19][MEMENTO.STARTUP] INFO: Бот начал работу.
+[15.04.2024 18:19:21][MEMENTO.MESSAGE] WARNING: Пришло сообщение от `_new`.
+[15.04.2024 18:26:29][MEMENTO.STARTUP] INFO: Бот начал работу.
+[15.04.2024 18:27:50][MEMENTO.MESSAGE] WARNING: Пришло сообщение от `_new`.
+[15.04.2024 18:27:51][MEMENTO.STARTUP] INFO: Бот начал работу.
+[15.04.2024 18:28:59][MEMENTO.STARTUP] INFO: Бот начал работу.
+[15.04.2024 18:29:00][MEMENTO.MESSAGE] WARNING: Пришло сообщение от `_new`.
+[15.04.2024 18:29:54][MEMENTO.STARTUP] INFO: Бот начал работу.
+[15.04.2024 18:29:55][MEMENTO.MESSAGE] WARNING: Пришло сообщение от `_new`.
+[15.04.2024 18:30:47][MEMENTO.STARTUP] INFO: Бот начал работу.
+[15.04.2024 18:30:48][MEMENTO.MESSAGE] WARNING: Пришло сообщение от `_new`.
+[15.04.2024 18:32:48][MEMENTO.MESSAGE] WARNING: Пришло сообщение от `_new`.
+[15.04.2024 19:17:19][MEMENTO.MESSAGE] WARNING: Пришло сообщение от `_new`.
+[15.04.2024 19:30:02][MEMENTO.MESSAGE] WARNING: Пришло сообщение от `_new`.
+[15.04.2024 19:30:02][MEMENTO.say_hello] INFO: Запрос функции `say_hello`.
+[15.04.2024 20:01:31][MEMENTO.STARTUP] INFO: Бот начал работу.
+[15.04.2024 20:01:41][MEMENTO.MESSAGE] WARNING: Пришло сообщение от `_new`.
+[15.04.2024 20:02:27][MEMENTO.STARTUP] INFO: Бот начал работу.
+[15.04.2024 20:02:35][MEMENTO.MESSAGE] WARNING: Пришло сообщение от `_new`.
+[15.04.2024 20:04:03][MEMENTO.STARTUP] INFO: Бот начал работу.
+[15.04.2024 20:04:05][MEMENTO.MESSAGE] WARNING: Пришло сообщение от `_new`.
+[15.04.2024 20:05:25][MEMENTO.STARTUP] INFO: Бот начал работу.
+[15.04.2024 20:05:30][MEMENTO.MESSAGE] WARNING: Пришло сообщение от `_new`.
+[15.04.2024 20:06:02][MEMENTO.STARTUP] INFO: Бот начал работу.
+[15.04.2024 20:06:10][MEMENTO.MESSAGE] WARNING: Пришло сообщение от `_new`.
+[15.04.2024 20:07:36][MEMENTO.STARTUP] INFO: Бот начал работу.
+[15.04.2024 20:07:37][MEMENTO.MESSAGE] WARNING: Пришло сообщение от `_new`.
+[15.04.2024 20:08:12][MEMENTO.STARTUP] INFO: Бот начал работу.
+[15.04.2024 20:08:13][MEMENTO.MESSAGE] WARNING: Пришло сообщение от `_new`.
+[15.04.2024 20:08:44][MEMENTO.STARTUP] INFO: Бот начал работу.
+[15.04.2024 20:08:46][MEMENTO.MESSAGE] WARNING: Пришло сообщение от `_new`.
+[15.04.2024 20:09:23][MEMENTO.STARTUP] INFO: Бот начал работу.
+[15.04.2024 20:09:24][MEMENTO.MESSAGE] WARNING: Пришло сообщение от `_new`.
+[15.04.2024 20:14:20][MEMENTO.STARTUP] INFO: Бот начал работу.
+[15.04.2024 20:14:22][MEMENTO.MESSAGE] WARNING: Пришло сообщение от `_new`.
+[15.04.2024 20:15:19][MEMENTO.STARTUP] INFO: Бот начал работу.
+[15.04.2024 20:15:21][MEMENTO.MESSAGE] WARNING: Пришло сообщение от `_new`.
+[15.04.2024 20:15:34][MEMENTO.MESSAGE] WARNING: Пришло сообщение от `_new`.
+[15.04.2024 20:15:34][MEMENTO.STARTUP] INFO: Бот начал работу.
+[15.04.2024 20:16:43][MEMENTO.STARTUP] INFO: Бот начал работу.
+[15.04.2024 20:16:44][MEMENTO.MESSAGE] WARNING: Пришло сообщение от `_new`.
+[15.04.2024 20:17:15][MEMENTO.MESSAGE] WARNING: Пришло сообщение от `_new`.
+[15.04.2024 20:17:16][MEMENTO.STARTUP] INFO: Бот начал работу.
+[15.04.2024 20:19:24][MEMENTO.STARTUP] INFO: Бот начал работу.
+[15.04.2024 20:19:28][MEMENTO.MESSAGE] WARNING: Пришло сообщение от `_new`.
+[15.04.2024 20:19:52][MEMENTO.MESSAGE] WARNING: Пришло сообщение от `_new`.
+[15.04.2024 20:19:52][MEMENTO.STARTUP] INFO: Бот начал работу.
+[15.04.2024 20:22:02][MEMENTO.STARTUP] INFO: Бот начал работу.
+[15.04.2024 20:22:03][MEMENTO.MESSAGE] WARNING: Пришло сообщение от `_new`.
+[15.04.2024 20:22:17][MEMENTO.MESSAGE] WARNING: Пришло сообщение от `_new`.
+[15.04.2024 20:22:17][MEMENTO.STARTUP] INFO: Бот начал работу.
+[15.04.2024 20:23:22][MEMENTO.STARTUP] INFO: Бот начал работу.
+[15.04.2024 20:23:23][MEMENTO.MESSAGE] WARNING: Пришло сообщение от `_new`.
+[15.04.2024 20:23:42][MEMENTO.STARTUP] INFO: Бот начал работу.
+[15.04.2024 20:23:42][MEMENTO.MESSAGE] WARNING: Пришло сообщение от `_new`.
+[15.04.2024 20:24:15][MEMENTO.STARTUP] INFO: Бот начал работу.
+[15.04.2024 20:24:15][MEMENTO.MESSAGE] WARNING: Пришло сообщение от `_new`.
+[15.04.2024 20:25:02][MEMENTO.STARTUP] INFO: Бот начал работу.
+[15.04.2024 20:25:05][MEMENTO.MESSAGE] WARNING: Пришло сообщение от `_new`.
+[15.04.2024 20:25:06][MEMENTO.hello] INFO: Запрос функции `hello`.
+[15.04.2024 20:25:08][MEMENTO.MESSAGE] WARNING: Пришло сообщение от `_new`.
+[15.04.2024 20:25:53][MEMENTO.STARTUP] INFO: Бот начал работу.
+[15.04.2024 20:25:53][MEMENTO.MESSAGE] WARNING: Пришло сообщение от `_new`.
+[15.04.2024 20:26:04][MEMENTO.MESSAGE] WARNING: Пришло сообщение от `_new`.
+[15.04.2024 20:26:10][MEMENTO.MESSAGE] WARNING: Пришло сообщение от `_new`.
+[15.04.2024 20:26:11][MEMENTO.hello] INFO: Запрос функции `hello`.
+[15.04.2024 20:26:14][MEMENTO.MESSAGE] WARNING: Пришло сообщение от `_new`.
+[15.04.2024 20:29:47][MEMENTO.STARTUP] INFO: Бот начал работу.
+[15.04.2024 20:29:49][MEMENTO.MESSAGE] WARNING: Пришло сообщение от `_new`.
+[15.04.2024 20:30:23][MEMENTO.STARTUP] INFO: Бот начал работу.
+[15.04.2024 20:30:30][MEMENTO.MESSAGE] WARNING: Пришло сообщение от `_new`.
+[15.04.2024 20:30:40][MEMENTO.MESSAGE] WARNING: Пришло сообщение от `_new`.
+[15.04.2024 20:31:03][MEMENTO.MESSAGE] WARNING: Пришло сообщение от `_new`.
+[15.04.2024 20:32:01][MEMENTO.STARTUP] INFO: Бот начал работу.
+[15.04.2024 20:32:05][MEMENTO.MESSAGE] WARNING: Пришло сообщение от `_new`.
+[15.04.2024 20:32:26][MEMENTO.MESSAGE] WARNING: Пришло сообщение от `_new`.
+[15.04.2024 20:32:43][MEMENTO.MESSAGE] WARNING: Пришло сообщение от `_new`.
