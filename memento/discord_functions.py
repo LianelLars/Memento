@@ -100,6 +100,9 @@ async def birthday(client: Bot, message: Message = None):
                 f'Сегодня, {today.strftime(BD_FORMAT)}, '
                 'ни у кого ДР нет :)'
             )
+        else:
+            logger.warning(
+                'Пользователей, у которых сегодня др, не обнаружено.')
 
 
 async def ya_gpt_message(client: Bot, message: Message):
